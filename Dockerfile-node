@@ -1,0 +1,23 @@
+### Dockerfile for alpine ###
+### uses node to print out hello from host ###
+
+FROM ubuntu:14.04
+
+# Update and get nodejs
+RUN apt-get -qq update && \
+	apt-get -qq -y install curl && \
+	curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
+	apt-get install -y nodejs
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Copy to app source
+COPY . /usr/src/app
+RUN npm install
+
+MAINTAINER nsmith@zam.com
+
+# Start npm
+CMD ["npm", "test"]
