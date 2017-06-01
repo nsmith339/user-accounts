@@ -1,22 +1,25 @@
 {
-  "name": "docker_web_app",
+  "name": "user_account_app",
   "version": "1.0.0",
-  "description": "Node.js with Koa 2 on Docker",
+  "description": "Node.js with MongoDB using Docker",
   "author": "Nathan Smith",
   "main": "app.js",
   "scripts": {
-    "test": "npm install & istanbul cover _mocha",
+    "test": "npm install & istanbul cover _mocha ./test/*.js",
     "start": "npm install && nodemon app.js"
   },
   "dependencies": {
-    "koa": "^2.2.0"
+    "koa": "^2.2.0",
+    "co": "^4.6.0",
+    "monk": "^5.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "co-mocha": "^1.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
     "nodemon": "^1.11.0",
-    "sinon": "^2.3.1",
-    "monk": "^5.0.2"
+    "rewire": "^2.5.2",
+    "sinon": "^2.3.1"
   }
 }

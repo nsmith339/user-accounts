@@ -500,8 +500,8 @@ var userAccounts = [
 		"last_name": "Wallace"
 	}
 ]
-
-const location = 'mongodb:27017/accounts' // location of db
+const settings = require('./settings.js');
+const location = settings.mongo_uri; // location of db
 const db = require('monk')(location)
 
 const temp = db.get('emails');
@@ -509,7 +509,7 @@ const temp = db.get('emails');
 module.exports = {
 	init: function() {
 		temp.insert(userAccounts, (err, result) => {
-			console.log('err', err, 'result', result);
+			//console.log('err', err, 'result', result);
 			db.close();
 		});
 	}	
