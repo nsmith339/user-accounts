@@ -15,9 +15,9 @@ WORKDIR /usr/src/app
 
 # Copy to app source
 COPY . /usr/src/app
-#RUN npm install
+RUN npm install -g mocha
 
 MAINTAINER nsmith@zam.com
 
 # Start npm
-CMD ["npm", "test"]
+CMD ["npm", "run", "mocha-only-test"]

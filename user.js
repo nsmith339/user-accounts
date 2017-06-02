@@ -1,12 +1,17 @@
 var settings = require('./settings.js');
-var mongo = require('monk')(settings.mongo_uri);
+const mongo_uri = settings.mongo_uri;			
+const collection = settings.mongo_collection;
+var mongo = require('monk')(settings.mongo_test_uri);
 var userColl = mongo.get('emails');
+
+
 
 // get document in database
 function* findUser(userDoc){
 	return function*(){
-		var result = yield userColl.find(userDoc);
-		return result;
+		var user = yield userColl.find(userDoc);
+		if (user[0] == undefined) return false;
+		return user;
 	}
 };
 
@@ -42,7 +47,6 @@ function* isUser(userDoc) {
 	if (user[0] != undefined) return true;
 	return false;
 }	
-
 
 
 

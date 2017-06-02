@@ -1,11 +1,13 @@
 {
   "name": "user_account_app",
   "version": "1.0.0",
+  "repository": "none",
   "description": "Node.js with MongoDB using Docker",
   "author": "Nathan Smith",
   "main": "app.js",
   "scripts": {
-    "test": "npm install & istanbul cover _mocha ./test/*.js",
+    "mocha-only-test": "npm install --no-optional && mocha test/test-user.js && sleep 36000",
+    "test": "npm install && ./node_modules/.bin/istanbul cover _mocha -- --recursive -R spec test",
     "start": "npm install && nodemon app.js"
   },
   "dependencies": {
@@ -15,11 +17,12 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "co-mocha": "^1.2.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
+    "chai": "^3.2.0",
+    "co-mocha": "^1.1.2",
+    "istanbul": "^0.3.19",
+    "mocha": "^2.3.0",
+    "rewire": "^2.3.4",
     "nodemon": "^1.11.0",
-    "rewire": "^2.5.2",
     "sinon": "^2.3.1"
   }
 }
