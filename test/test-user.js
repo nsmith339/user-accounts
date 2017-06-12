@@ -7,7 +7,7 @@ var expect = require('chai').expect;	// Assertion library to use
 var chai = require('chai');
 var rewire = require('rewire');
 var userRewire = rewire('../user.js');
-var db = require('monk')(settings.mongo_test_uri);
+//var db = require('monk')(settings.mongo_test_uri);
 
 var a_user = {
 first_name: "ASDF",
@@ -25,17 +25,17 @@ var userColl = mongo.get('emails');
 
 function printDB() {
 	userColl.find({}, (err, res) => {
-	console.log("DB:");
-	if (err) console.log(err);
-	console.log(res);
-	mongo.close();
+		console.log("DB:");
+		if (err) console.log(err);
+		console.log(res);
+		mongo.close();
 })
 };
 
 function clearDB() {
 	userColl.remove({}, (err, res) => {
-	if (err) console.log(err);
-	mongo.close();
+		if (err) console.log(err);
+		mongo.close();
 })
 };
 var AddUserFn = userRewire.__get__("addUser");
@@ -55,22 +55,19 @@ describe('app', function() {
 
         it('returns false if user is not in database', function* (done) {
         	var value = yield FindUserFn(actual_user);
-        	var result = yield value();
-        	expect(result).to.equal(false);
+        	expect(value).to.equal(false);
         	done();
         })
 
         it('returns the userDoc if user is in database', function* (done) {
         	// get info from db
-        	var value = yield FindUserFn(a_user);
-        	var result = yield value();
+        	var result = yield FindUserFn(a_user);
         	//console.log("user exists?", result);
         	// user not in db, we want to test for true:
-        	// add user, test, then remove user
+        	// add user, test, userthen remove user
         	if (result == false) {
         		//console.log("temporarily adding user for test");
-       			var returned = yield AddUserFn(a_user);
-       			value = yield returned();
+       			var value = yield AddUserFn(a_user);
        			//console.log("user added? ", value);
        			// this should be impossible
        			if (value == false){
@@ -78,12 +75,10 @@ describe('app', function() {
        			}
 
        			// try again
-       			value = yield FindUserFn(a_user);
-       			result = yield value();
+       			result = yield FindUserFn(a_user);
         		expect(result[0].first_name).to.equal(a_user.first_name);
         		// remove user
-        		returned = yield RemoveUserFn(a_user);
-        		value = yield returned();
+        		value = yield RemoveUserFn(a_user);
         		//console.log("user removed? ", value);
         	}
         	else
@@ -94,29 +89,24 @@ describe('app', function() {
 
     // add user to db
     describe('#addUser()', function() {
-    	before( function* () {
+    	beforeEach( function* () {
     		// remove the test user if it's there
     		yield RemoveUserFn(a_user);
     	});
 
         it('returns true if addded a new user to database', function* (done) {
-        	var value = yield AddUserFn(a_user);
-        	var result = yield value();
-        	
+        	var result = yield AddUserFn(a_user);        	
         	expect(result).to.equal(true);
         	done();
         });
 
 
-        before(function* () {
-        	// add a user
-        	var value = yield AddUserFn(a_user);
-        });
+     
 
         it('returns false if user is in database already', function* (done) {
-        	value = yield AddUserFn(a_user);
-        	var result = yield value();
-        	
+        	// add same document twice
+        	var result = yield AddUserFn(a_user);
+        	result = yield AddUserFn(a_user); // should return falsels
         	expect(result).to.equal(false);
         	done();
         });
@@ -138,8 +128,7 @@ describe('app', function() {
         	yield AddUserFn(a_user);
 
         	// run test
-        	var value = yield RemoveUserFn(a_user);
-        	var result = yield value();
+        	var result = yield RemoveUserFn(a_user);
         	
         	expect(result).to.equal(true);
         	// remove temp user
@@ -148,8 +137,7 @@ describe('app', function() {
         });
 
         it('returns false if a user was not in db', function* (done) {
-        	value = yield RemoveUserFn(a_user);
-        	var result = yield value();
+        	var result = yield RemoveUserFn(a_user);
         	expect(result).to.equal(false);
         	done();
         });

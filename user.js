@@ -7,7 +7,7 @@ var userColl = mongo.get('emails');
 
 
 // get document in database
-function* findUser(userDoc){
+function findUser(userDoc){
 	return function*(){
 		var user = yield userColl.find(userDoc);
 		if (user[0] == undefined) return false;
@@ -16,20 +16,24 @@ function* findUser(userDoc){
 };
 
 // add document to database
-function* addUser(userDoc){
+function addUser(userDoc){
 	return function*(){
 		// find if user is in database already
 		var user = yield userColl.find(userDoc);
+		console.log("user", user[0]);
 		// user not found
 		if (user[0] != undefined) return false;
-		result = yield userColl.insert(userDoc);
-		return true;
+
+		var result = yield userColl.insert(userDoc);
+		console.log("result", result);
+		if (result != undefined) return true;
+		else return Error;
 	}
 };
 
 
 // remove document from database
-function* removeUser(userDoc){
+function removeUser(userDoc){
 	return function*(){
 		var user = yield userColl.find(userDoc);
 		// no user exists
@@ -40,19 +44,9 @@ function* removeUser(userDoc){
 	}
 };
 
-// boolean is in database
-function* isUser(userDoc) {
-	var user = yield userColl.find(userDoc);
-	// user is found
-	if (user[0] != undefined) return true;
-	return false;
-}	
-
-
 
 module.exports = {
 	findUser : findUser,
 	addUser : addUser,
-	removeUser : removeUser,
-	isUser : isUser
+	removeUser : removeUser
 };

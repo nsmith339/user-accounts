@@ -8,6 +8,7 @@ RUN apt-get -qq update && \
 	apt-get -qq -y install curl && \
 	curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
 	apt-get install -y nodejs
+RUN npm install -g mocha
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -15,9 +16,8 @@ WORKDIR /usr/src/app
 
 # Copy to app source
 COPY . /usr/src/app
-RUN npm install -g mocha
 
 MAINTAINER nsmith@zam.com
 
 # Start npm
-CMD ["npm", "run", "mocha-only-test"]
+CMD ["npm", "run", "start"]

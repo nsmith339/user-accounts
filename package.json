@@ -6,9 +6,9 @@
   "author": "Nathan Smith",
   "main": "app.js",
   "scripts": {
-    "mocha-only-test": "npm install --no-optional && mocha test/test-user.js && sleep 36000",
-    "test": "npm install && ./node_modules/.bin/istanbul cover _mocha -- --recursive -R spec test",
-    "start": "npm install && nodemon app.js"
+    "mocha-only-test": "npm install --no-optional && mocha test/test-user.js",
+    "test": "./node_modules/.bin/istanbul cover _mocha -- --recursive -R spec test",
+    "start": "npm install && nodemon app.js && sleep 36000"
   },
   "dependencies": {
     "koa": "^2.2.0",
